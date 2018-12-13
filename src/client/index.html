@@ -3,7 +3,7 @@ html, body {
     margin: 0;
     padding: 0;
     overflow: hidden;
-    background: url('bg-7v.png');
+    background: url('bg-8v.png');
     background-size: 100%;
     background-repeat: no-repeat;
 
@@ -20,9 +20,9 @@ div {
 <script src="http://bracket.herpderp.fi:9011/socket.io/socket.io.js"></script>
 <script>
 var positions = [
-    [[450, 115], [450, 170], [450, 266], [450, 320], [450, 570], [450, 625], [450, 720], [450, 780]],
-    [[800, 190], [800, 245], [800, 645], [800, 700]],
-    [[1150, 340], [1150, 395], [1150, 645], [1150, 700]]
+    [[500, 155], [500, 205], [500, 290], [500, 340], [500, 560], [500, 610], [500, 693], [500, 740]],
+    [[814, 224], [814, 273], [814, 627], [814, 675]],
+    [[1123, 356], [1123, 405], [1123, 627], [1123, 675]]
 ];
 var socket = io('http://bracket.herpderp.fi:9011/');
 socket.on('state', function (state) {
@@ -43,7 +43,7 @@ socket.on('state', function (state) {
 
             var elem = document.createElement('div');
             elem.contentEditable = true;
-            elem.style.left = '' + ((positions[levelIndex][statusIndex][0] + 260)/1920*100) + 'vw';
+            elem.style.left = '' + ((positions[levelIndex][statusIndex][0] + 238)/1920*100) + 'vw';
             elem.style.top = '' + (positions[levelIndex][statusIndex][1]/1920*100) + 'vw';
             elem.textContent = status.score;
             elem.addEventListener('keyup', function () {
