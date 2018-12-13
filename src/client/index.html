@@ -1,0 +1,56 @@
+<style>
+html, body {
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background: url('bg-7v.png');
+    background-size: 100%;
+    background-repeat: no-repeat;
+
+    font-family: sans-serif;
+    font-size: 1.2vw;
+
+    color: white;
+}
+div {
+    position: absolute;
+    padding: 0.6vw;
+}
+</style>
+<script src="http://bracket.herpderp.fi:9011/socket.io/socket.io.js"></script>
+<script>
+var positions = [
+    [[450, 115], [450, 170], [450, 266], [450, 320], [450, 570], [450, 625], [450, 720], [450, 780]],
+    [[800, 190], [800, 245], [800, 645], [800, 700]],
+    [[1150, 340], [1150, 395], [1150, 645], [1150, 700]]
+];
+var socket = io('http://bracket.herpderp.fi:9011/');
+socket.on('state', function (state) {
+    Array.prototype.slice.call(document.querySelectorAll('div')).map(function (elem) {
+        document.body.removeChild(elem);
+    });
+    state.levels.map(function(level, levelIndex) {
+        level.map(function(status, statusIndex) {
+            var elem = document.createElement('div');
+            elem.contentEditable = true;
+            elem.style.left = '' + (positions[levelIndex][statusIndex][0]/1920*100) + 'vw';
+            elem.style.top = '' + (positions[levelIndex][statusIndex][1]/1920*100) + 'vw';
+            elem.textContent = status.player;
+            elem.addEventListener('keyup', function () {
+                socket.emit('player', {level: levelIndex, status: statusIndex, player: this.textContent});
+            });
+            document.body.appendChild(elem);
+
+            var elem = document.createElement('div');
+            elem.contentEditable = true;
+            elem.style.left = '' + ((positions[levelIndex][statusIndex][0] + 260)/1920*100) + 'vw';
+            elem.style.top = '' + (positions[levelIndex][statusIndex][1]/1920*100) + 'vw';
+            elem.textContent = status.score;
+            elem.addEventListener('keyup', function () {
+                socket.emit('score', {level: levelIndex, status: statusIndex, score: this.textContent});
+            });
+            document.body.appendChild(elem);
+        });
+    });
+});
+</script>
